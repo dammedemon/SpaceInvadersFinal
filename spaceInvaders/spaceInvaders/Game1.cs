@@ -8,6 +8,7 @@ namespace spaceInvaders;
 
 public class Game1 : Game
 {
+    Player player;
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
@@ -29,7 +30,14 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        // TODO: use this.Content to load your game content here
+        Texture2D playerTex = Content.Load<Texture2D>("Ship_01-1");
+
+        Vector2 playerPos = new Vector2(Window.ClientBounds.Width / 2 - playerTex.Width / 2, Window.ClientBounds.Height - playerTex.Height - 20);
+
+        int stopX = Window.ClientBounds.Width - playerTex.Width;
+
+        player = new Player(playerTex, playerPos, stopX);
+
     }
 
     protected override void Update(GameTime gameTime)
@@ -37,6 +45,7 @@ public class Game1 : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
+        player.Update();
         // TODO: Add your update logic here
 
         base.Update(gameTime);
@@ -45,6 +54,9 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
+        _spriteBatch.Begin();
+        _spriteBatch.Draw(player.playerTex, player.playerPos, Color.White);
+        _spriteBatch.End();
 
         // TODO: Add your drawing code here
 
