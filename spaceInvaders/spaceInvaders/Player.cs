@@ -20,11 +20,11 @@ namespace spaceInvaders
 
         public void Update()
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Left) && playerPos.X > 0)
+            if (Keyboard.GetState().IsKeyDown(Keys.Left) && playerPos.X > 5)
             {
                 playerPos.X -= playerSpeed;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Right) && playerPos.X < stopX)
+            if (Keyboard.GetState().IsKeyDown(Keys.Right) && playerPos.X < stopX - 5)
             {
                 playerPos.X += playerSpeed;
             }
