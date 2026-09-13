@@ -21,8 +21,6 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        // TODO: Add your initialization logic here
-
         base.Initialize();
     }
 
@@ -46,7 +44,6 @@ public class Game1 : Game
             Exit();
 
         player.Update();
-        // TODO: Add your update logic here
 
         base.Update(gameTime);
     }
@@ -55,10 +52,10 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
+        
         _spriteBatch.Draw(player.playerTex, player.playerPos, Color.White);
+        
         _spriteBatch.End();
-
-        // TODO: Add your drawing code here
 
         base.Draw(gameTime);
     }
