@@ -8,10 +8,10 @@ namespace spaceInvaders
 {
     class Player
     {
-        public Texture2D playerTex;
-        public Vector2 playerPos;
-        public int stopX;
-        public int playerSpeed = 5;
+        private Texture2D playerTex;
+        private Vector2 playerPos;
+        private int stopX;
+        private int playerSpeed = 5;
 
         public Player(Texture2D playerTex, Vector2 playerPos, int stopX)
         {
@@ -29,6 +29,11 @@ namespace spaceInvaders
             {
                 playerPos.X += playerSpeed;
             }
+        }
+
+        public void Draw(SpriteBatch _spriteBatch)
+        {
+            _spriteBatch.Draw(playerTex, playerPos, Color.White);
         }
     }
 }
