@@ -29,13 +29,10 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         Texture2D playerTex = Content.Load<Texture2D>("Ship_01-1");
-
         Vector2 playerPos = new Vector2(Window.ClientBounds.Width / 2 - playerTex.Width / 2, Window.ClientBounds.Height - playerTex.Height - 20);
-
         int stopX = Window.ClientBounds.Width - playerTex.Width;
 
         player = new Player(playerTex, playerPos, stopX);
-
     }
 
     protected override void Update(GameTime gameTime)
@@ -48,13 +45,12 @@ public class Game1 : Game
         base.Update(gameTime);
     }
 
-    protected override void Draw(GameTime gameTime)
+     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
+
         _spriteBatch.Begin();
-        
         _spriteBatch.Draw(player.playerTex, player.playerPos, Color.White);
-        
         _spriteBatch.End();
 
         base.Draw(gameTime);

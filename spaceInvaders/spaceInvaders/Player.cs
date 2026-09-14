@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 
 namespace spaceInvaders
 {
@@ -17,14 +19,13 @@ namespace spaceInvaders
             this.playerPos = playerPos;
             this.stopX = stopX;
         }
-
         public void Update()
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Left) && playerPos.X > 5)
+            if (Keyboard.GetState().IsKeyDown(Keys.Left) && playerPos.X > 0)
             {
                 playerPos.X -= playerSpeed;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Right) && playerPos.X < stopX - 5)
+            if (Keyboard.GetState().IsKeyDown(Keys.Right) && playerPos.X < stopX)
             {
                 playerPos.X += playerSpeed;
             }
