@@ -15,5 +15,18 @@ namespace spaceInvaders
             this.bulletTex = bulletTex;
             this.bulletPos = bulletPos;
         }
+
+        public void Update()
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                bulletPos.Y -= bulletSpeed;
+            }
+        }
+
+        public void Draw(SpriteBatch _spriteBatch)
+        {
+            _spriteBatch.Draw(bulletTex, bulletPos, Color.White);
+        }
     }
 }
