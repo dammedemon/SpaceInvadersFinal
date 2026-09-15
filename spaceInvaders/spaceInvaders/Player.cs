@@ -11,13 +11,19 @@ namespace spaceInvaders
         private Texture2D playerTex;
         private Vector2 playerPos;
         private int stopX;
+        private Texture2D bulletTex;
         private int playerSpeed = 5;
+        
+        private KeyboardState previousKeyboardState;
+        private List<Bullet> bullets;
 
-        public Player(Texture2D playerTex, Vector2 playerPos, int stopX)
+        public Player(Texture2D playerTex, Vector2 playerPos, int stopX, Texture2D bulletTex, List<Bullet> bullets)
         {
             this.playerTex = playerTex;
             this.playerPos = playerPos;
             this.stopX = stopX;
+            this.bulletTex = bulletTex;
+            this.bullets = bullets;
         }
         public void Update()
         {
@@ -25,11 +31,27 @@ namespace spaceInvaders
             {
                 playerPos.X -= playerSpeed;
             }
+            
             if (Keyboard.GetState().IsKeyDown(Keys.Right) && playerPos.X < stopX)
             {
                 playerPos.X += playerSpeed;
             }
+
+            KeyboardState currentKeyboardState = Keyboard.GetState();
+
+            if (currentKeyboardState.IsKeyDown(Keys.Space) && previousKeyboardState.IsKeyUp(Keys.Space))
+            {
+                Vector2 bulletPos = new Vector2(playerPos.X + playerTex.Width / 2 - bulletTex.Width / 2, playerPos.Y);
+
+                Bullet bullet = new Bullet(bulletTex, bulletPos);
+
+                bullets.Add(bullet);
+            }
+
+            previousKeyboardState = currentKeyboardState;
         }
+
+        public Vector2 Position => playerPos;
 
         public void Draw(SpriteBatch _spriteBatch)
         {

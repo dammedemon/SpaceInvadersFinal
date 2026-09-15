@@ -18,10 +18,7 @@ namespace spaceInvaders
 
         public void Update()
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
-            {
-                bulletPos.Y -= bulletSpeed;
-            }
+            bulletPos.Y -= bulletSpeed;
         }
 
         public void Draw(SpriteBatch _spriteBatch)

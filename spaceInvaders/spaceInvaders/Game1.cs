@@ -9,6 +9,7 @@ namespace spaceInvaders;
 public class Game1 : Game
 {
     Player player;
+    List<Bullet> bullets = new List<Bullet>();
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
@@ -28,11 +29,14 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+        Texture2D bulletTex = Content.Load<Texture2D>("bullet_SI-1");
+
+
         Texture2D playerTex = Content.Load<Texture2D>("Ship_01-1");
         Vector2 playerPos = new Vector2(Window.ClientBounds.Width / 2 - playerTex.Width / 2, Window.ClientBounds.Height - playerTex.Height - 20);
         int stopX = Window.ClientBounds.Width - playerTex.Width;
 
-        player = new Player(playerTex, playerPos, stopX);
+        player = new Player(playerTex, playerPos, stopX, bulletTex, bullets);
     }
 
     protected override void Update(GameTime gameTime)
@@ -42,15 +46,26 @@ public class Game1 : Game
 
         player.Update();
 
+        foreach (var bullet in bullets)
+        {
+            bullet.Update();
+        }
+
         base.Update(gameTime);
     }
 
      protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
+        GraphicsDevice.Clear(Color.Purple);
 
         _spriteBatch.Begin();
         player.Draw(_spriteBatch);
+        
+        foreach (var bullet in bullets)
+        {
+            bullet.Draw(_spriteBatch);
+        }
+        
         _spriteBatch.End();
 
         base.Draw(gameTime);
