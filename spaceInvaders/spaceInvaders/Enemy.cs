@@ -19,15 +19,15 @@ namespace spaceInvaders
             this.enemyTex = enemyTex;
             this.enemyPos = enemyPos;
 
-            hitBox = new Rectangle((int)Position.X, (int)Position.Y, enemyTex.Width, enemyTex.Height);
+            hitBox = new Rectangle((int)enemyPos.X, (int)enemyPos.Y, enemyTex.Width, enemyTex.Height);
         }
 
         public void Update()
         {
             enemyPos.Y += enemySpeed;
 
-            hitBox.X = (int)Position.X;
-            hitBox.Y = (int)Position.Y;
+            hitBox.X = (int)enemyPos.X;
+            hitBox.Y = (int)enemyPos.Y;
         }
 
         public void Draw(SpriteBatch sb)

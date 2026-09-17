@@ -17,7 +17,7 @@ namespace spaceInvaders
             this.bulletTex = bulletTex;
             this.bulletPos = bulletPos;
 
-            hitBox = new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height);
+            hitBox = new Rectangle((int)bulletPos.X, (int)bulletPos.Y, bulletTex.Width, bulletTex.Height);
         }
 
         public void Update()

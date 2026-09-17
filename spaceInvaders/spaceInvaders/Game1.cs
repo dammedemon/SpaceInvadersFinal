@@ -70,19 +70,19 @@ public class Game1 : Game
             bullet.Update();
         }
 
-        // Hnadling bullet collision 
+        // Handling bullet collision 
 
-        for (int i = enemies.Count - 1; i >= 0; i--)
-        {
-            for (int k = bullets.Count - 1; k >= 0; k--)
-            {
-                if (enemies[i].hitBox.Intersects(bullets[k].hitBox))
-                {
-                    enemies[i].Remove;
-                    bullets[k].Remove;
-                }
-            }
-        }
+        // for (int i = enemies.Count - 1; i >= 0; i--)
+        // {
+        //     for (int k = bullets.Count - 1; k >= 0; k--)
+        //     {
+        //         if (enemies[i].hitBox.Intersects(bullets[k].hitBox))
+        //         {
+        //             enemies[i].Remove;
+        //             bullets[k].Remove;
+        //         }
+        //     }
+        // }
 
         base.Update(gameTime);
     }
