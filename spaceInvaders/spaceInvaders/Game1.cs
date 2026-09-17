@@ -4,17 +4,19 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 
+
 namespace spaceInvaders;
 
 public class Game1 : Game
 {
+    private GraphicsDeviceManager _graphics;
+    private SpriteBatch sb;
+    
     Player player;
     List<Bullet> bullets = new List<Bullet>();
     List<Enemy> enemies = new List<Enemy>();
-    private GraphicsDeviceManager _graphics;
-    private SpriteBatch sb;
-    int width = 500; 
-    int height = 1000;
+    public const int windowWidth = 500; 
+    public const int windowHeight = 1000;
 
     public Game1()
     {
@@ -27,8 +29,8 @@ public class Game1 : Game
     {
         // Determine window size & title
         Window.Title = "Space Invaders! | Score: ";
-        _graphics.PreferredBackBufferWidth = width;
-        _graphics.PreferredBackBufferHeight = height;
+        _graphics.PreferredBackBufferWidth = windowWidth;
+        _graphics.PreferredBackBufferHeight = windowHeight;
         _graphics.ApplyChanges();
         base.Initialize();
     }
@@ -45,13 +47,13 @@ public class Game1 : Game
         int stopX = Window.ClientBounds.Width - playerTex.Width;
         player = new Player(playerTex, playerPos, stopX, bulletTex, bullets);
        
-        for (int i = 0; i < 3; i++)
+        for (int column = 0; column < 5; column++)
         {
-            for (int j = 0; j < 5; i++)
+            for (int row = 0; row < 3; row++)
             {
-                int x = j * 100;
-                int y = i * 100;
-                enemies[i,j] = new Enemy(enemyTex, x, y);
+                Vector2 enemyPos = new Vector2(column * 100 + 50, row * 100 + 50);
+                Enemy enemy = new Enemy(enemyTex, enemyPos);
+                enemies.Add(enemy);
             }
         }
     }
@@ -73,21 +75,22 @@ public class Game1 : Game
 
      protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.Purple);
+        GraphicsDevice.Clear(Color.Black);
 
         sb.Begin();
-        
         player.Draw(sb); 
-        
-        
         
         foreach (var bullet in bullets)
         {
             bullet.Draw(sb);
         }
+
+        foreach (var enemy in enemies)
+        {
+            enemy.Draw(sb);    
+        }
         
         sb.End();
-
         base.Draw(gameTime);
     }
 }

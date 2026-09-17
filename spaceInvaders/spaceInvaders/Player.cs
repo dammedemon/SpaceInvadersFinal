@@ -10,12 +10,14 @@ namespace spaceInvaders
     {
         private Texture2D playerTex;
         private Vector2 playerPos;
-        private int stopX;
-        private Texture2D bulletTex;
         private int playerSpeed = 5;
+        private int stopX;
         
         private KeyboardState previousKeyboardState;
         private List<Bullet> bullets;
+        private Texture2D bulletTex;
+
+        public Vector2 Position => playerPos;
 
         public Player(Texture2D playerTex, Vector2 playerPos, int stopX, Texture2D bulletTex, List<Bullet> bullets)
         {
@@ -50,8 +52,6 @@ namespace spaceInvaders
             
             previousKeyboardState = currentKeyboardState;
         }
-
-        public Vector2 Position => playerPos;
 
         public void Draw(SpriteBatch sb)
         {
