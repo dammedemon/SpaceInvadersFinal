@@ -53,9 +53,9 @@ namespace spaceInvaders
 
         public Vector2 Position => playerPos;
 
-        public void Draw(SpriteBatch _spriteBatch)
+        public void Draw(SpriteBatch sb)
         {
-            _spriteBatch.Draw(playerTex, playerPos, Color.White);
+            sb.Draw(playerTex, playerPos, Color.White);
         }
     }
 }

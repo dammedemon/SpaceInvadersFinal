@@ -21,9 +21,9 @@ namespace spaceInvaders
             bulletPos.Y -= bulletSpeed;
         }
 
-        public void Draw(SpriteBatch _spriteBatch)
+        public void Draw(SpriteBatch sb)
         {
-            _spriteBatch.Draw(bulletTex, bulletPos, Color.White);
+            sb.Draw(bulletTex, bulletPos, Color.White);
         }
     }
 }
