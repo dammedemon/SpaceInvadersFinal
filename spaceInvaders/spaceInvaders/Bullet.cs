@@ -10,14 +10,14 @@ namespace spaceInvaders
         private Vector2 bulletPos;
         private int bulletSpeed = 10;
 
-        // public Rectangle hitBox;
+        public Rectangle hitBox;
 
         public Bullet(Texture2D bulletTex, Vector2 bulletPos)
         {
             this.bulletTex = bulletTex;
             this.bulletPos = bulletPos;
 
-            // hitBox = new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height);
+            hitBox = new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height);
         }
 
         public void Update()
