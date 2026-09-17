@@ -10,13 +10,24 @@ namespace spaceInvaders
     {
         private Texture2D enemyTex;
         private Vector2 enemyPos;
-        private int enemySpeed;
+        private int enemySpeed = 1;
 
-        public Enemy(Texture2D enemyTex, Vector2 enemyPos, int enemySpeed)
+        // public Rectangle hitBox;
+
+        public Enemy(Texture2D enemyTex, Vector2 enemyPos)
         {
             this.enemyTex = enemyTex;
-            this.enemySpeed = enemySpeed;
-            this.enemyPos = new Vector2(posX, posY);
+            this.enemyPos = enemyPos;
+
+            // hitBox = new Rectangle((int)Position.X, (int)Position.Y, enemyTex.Width, enemyTex.Height);
+        }
+
+        public void Update()
+        {
+            enemyPos.Y += enemySpeed;
+
+            // hitBox.X = (int)Position.X;
+            // hitBox.Y = (int)Position.Y;
         }
 
         public void Draw(SpriteBatch sb)
