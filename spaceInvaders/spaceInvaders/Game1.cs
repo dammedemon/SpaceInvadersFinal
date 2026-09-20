@@ -122,7 +122,7 @@ public class Game1 : Game
             }
         }
 
-        
+
         if (livesLeft <= 0)
         {
             bullets.Clear();
@@ -153,7 +153,7 @@ public class Game1 : Game
         
         if (livesLeft <= 0)
         {
-            sb.DrawString(endText, "You lost", endTextPos, Color.Red);
+            sb.DrawString(endText, "You lost! Final score: " + score, endTextPos, Color.Red);
         }
         
         sb.End();
