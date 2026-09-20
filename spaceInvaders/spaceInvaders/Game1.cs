@@ -94,7 +94,7 @@ public class Game1 : Game
         // Updating enemy position and hitbox
         foreach (var enemy in enemies)
         {
-            enemy.Update();
+            enemy.Update(gameTime);
         }
 
         // Handling bullet collision and removing bullets and enemies as they collide and adding points
