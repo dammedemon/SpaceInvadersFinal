@@ -10,7 +10,9 @@ namespace spaceInvaders
     {
         private Texture2D enemyTex;
         private Vector2 enemyPos;
-        private int enemySpeed = 1;
+        private float enemySpeed = 3.0f;
+
+        public Vector2 Position => enemyPos;
 
         public Rectangle hitBox;
 
@@ -24,10 +26,8 @@ namespace spaceInvaders
 
         public void Update()
         {
+            hitBox.Location = enemyPos.ToPoint();
             enemyPos.Y += enemySpeed;
-
-            hitBox.X = (int)enemyPos.X;
-            hitBox.Y = (int)enemyPos.Y;
         }
 
         public void Draw(SpriteBatch sb)

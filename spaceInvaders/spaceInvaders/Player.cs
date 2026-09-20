@@ -43,7 +43,7 @@ namespace spaceInvaders
             // Shooting & making sure its semi automatic
             KeyboardState currentKeyboardState = Keyboard.GetState();
 
-            if (currentKeyboardState.IsKeyDown(Keys.Space) && previousKeyboardState.IsKeyUp(Keys.Space))
+            if (currentKeyboardState.IsKeyDown(Keys.Space) && previousKeyboardState.IsKeyUp(Keys.Space) && bullets.Count == 0)
             {
                 Vector2 bulletPos = new Vector2(playerPos.X + playerTex.Width / 2 - bulletTex.Width / 2, playerPos.Y);
                 Bullet bullet = new Bullet(bulletTex, bulletPos);

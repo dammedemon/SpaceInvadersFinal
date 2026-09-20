@@ -12,6 +12,8 @@ namespace spaceInvaders
 
         public Rectangle hitBox;
 
+        public Vector2 Position => bulletPos;
+
         public Bullet(Texture2D bulletTex, Vector2 bulletPos)
         {
             this.bulletTex = bulletTex;
@@ -22,6 +24,7 @@ namespace spaceInvaders
 
         public void Update()
         {
+            hitBox.Location = bulletPos.ToPoint();
             bulletPos.Y -= bulletSpeed;
         }
 
