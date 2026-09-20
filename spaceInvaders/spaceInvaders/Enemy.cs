@@ -10,7 +10,7 @@ namespace spaceInvaders
     {
         private Texture2D enemyTex;
         private Vector2 enemyPos;
-        private float enemySpeed = 3.0f;
+        private float enemySpeed = 0.5f;
 
         public Vector2 Position => enemyPos;
 

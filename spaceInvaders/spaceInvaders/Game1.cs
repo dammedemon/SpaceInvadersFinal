@@ -122,6 +122,7 @@ public class Game1 : Game
             }
         }
 
+        
         if (livesLeft <= 0)
         {
             bullets.Clear();
