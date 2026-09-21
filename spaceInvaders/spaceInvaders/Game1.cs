@@ -46,14 +46,17 @@ public class Game1 : Game
     {
         sb = new SpriteBatch(GraphicsDevice);
         
+        // Loads the texture of the bullet
         Texture2D bulletTex = Content.Load<Texture2D>("bullet_SI-1");
        
+        // Spawning player
         Texture2D playerTex = Content.Load<Texture2D>("Ship_01-1");
         Vector2 playerPos = new Vector2(Window.ClientBounds.Width / 2 - playerTex.Width / 2, Window.ClientBounds.Height - playerTex.Height);
         
         int stopX = Window.ClientBounds.Width - playerTex.Width;
         player = new Player(playerTex, playerPos, stopX, bulletTex, bullets);
         
+        // Spawning enemies
         Texture2D enemyTex = Content.Load<Texture2D>("single_alien");
         for (int column = 0; column < 6; column++)
         {
@@ -65,6 +68,7 @@ public class Game1 : Game
             }
         }
 
+        // Text you see at the end of the game
         endText = Content.Load<SpriteFont>("endText");
         endTextPos = new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2); 
     }
@@ -74,9 +78,10 @@ public class Game1 : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
+        
         player.Update();
 
-        // Updating bullet position and hitbox
+        // Updating bullet
         foreach (var bullet in bullets)
         {
             bullet.Update();
@@ -91,13 +96,13 @@ public class Game1 : Game
             }
         }
 
-        // Updating enemy position and hitbox
+        // Updating enemy
         foreach (var enemy in enemies)
         {
             enemy.Update(gameTime);
         }
 
-        // Handling bullet collision and removing bullets and enemies as they collide and adding points
+        // Looping through each enemy and bullet to see if they collide to then remove them and add points
         for (int i = enemies.Count - 1; i >= 0; i--)
         {
             for (int k = bullets.Count - 1; k >= 0; k--)
@@ -112,7 +117,7 @@ public class Game1 : Game
             }
         }
 
-        // Removes a life if an enemy reaches the bottom of the screen
+        // Removes a life if the bottom of an enemy reaches the bottom of the screen
         for (int i = enemies.Count - 1; i >= 0; i--)
         {
             if (enemies[i].hitBox.Y + enemies[i].hitBox.Height > windowHeight)
@@ -122,7 +127,7 @@ public class Game1 : Game
             }
         }
 
-
+        // Removes all bullets and enemies from screen if lives reach zero or goes below
         if (livesLeft <= 0)
         {
             bullets.Clear();
@@ -140,17 +145,20 @@ public class Game1 : Game
 
         sb.Begin();
         player.Draw(sb); 
-        
+
+        // Draws each bullet   
         foreach (var bullet in bullets)
         {
             bullet.Draw(sb);
         }
 
+        // Draws each enemy
         foreach (var enemy in enemies)
         {
             enemy.Draw(sb);    
         }
         
+        // Draws text on screen if you lose
         if (livesLeft <= 0)
         {
             sb.DrawString(endText, "You lost! Final score: " + score, endTextPos, Color.Red);

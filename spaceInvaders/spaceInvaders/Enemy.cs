@@ -29,8 +29,10 @@ namespace spaceInvaders
 
         public void Update(GameTime gameTime)
         {
+            // Keeps hitbox at enemy location
             hitBox.Location = enemyPos.ToPoint();
             
+            // Moves the enemy when timer equals one or higher then resets timer
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (timer >= 1)
             {

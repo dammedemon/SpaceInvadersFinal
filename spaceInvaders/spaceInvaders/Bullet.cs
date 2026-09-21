@@ -8,7 +8,7 @@ namespace spaceInvaders
     {
         private Texture2D bulletTex;
         private Vector2 bulletPos;
-        private int bulletSpeed = 10;
+        private int bulletSpeed = 7;
 
         public Rectangle hitBox;
 
@@ -24,6 +24,7 @@ namespace spaceInvaders
 
         public void Update()
         {
+            // Keeps hitbox location at bullet location
             hitBox.Location = bulletPos.ToPoint();
             bulletPos.Y -= bulletSpeed;
         }
