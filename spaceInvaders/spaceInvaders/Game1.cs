@@ -15,16 +15,13 @@ public class Game1 : Game
     Player player;
     
     List<Bullet> bullets = new List<Bullet>();
-    List<Enemy> enemies = new List<Enemy>();
+    Enemy[,] enemies;
     
     public const int windowWidth = 750; 
     public const int windowHeight = 1000;
     
-    int score;
+    int score = 0;
     int livesLeft = 3;
-
-    SpriteFont endText;
-    Vector2 endTextPos;
 
     public Game1()
     {
@@ -58,19 +55,27 @@ public class Game1 : Game
         
         // Spawning enemies
         Texture2D enemyTex = Content.Load<Texture2D>("single_alien");
-        for (int column = 0; column < 6; column++)
-        {
-            for (int row = 0; row < 3; row++)
-            {
-                Vector2 enemyPos = new Vector2(column * 110 + 50, row * 110 + 50);
-                Enemy enemy = new Enemy(enemyTex, enemyPos);
-                enemies.Add(enemy);
-            }
+        enemies = new Enemy[5,6];
+        for (int row = 0; row < 5; row++) 
+        { 
+            for (int column = 0; column < 6; column++) 
+            { 
+                int x = column * 50;             
+                int y = row * 50; 
+                Vector2 enemyPos = new Vector2(x,y);
+                enemies[row,column] = new Enemy(enemyTex, enemyPos); 
+            } 
         }
-
-        // Text you see at the end of the game
-        endText = Content.Load<SpriteFont>("endText");
-        endTextPos = new Vector2(Window.ClientBounds.Width / 2, Window.ClientBounds.Height / 2); 
+        
+        // for (int column = 0; column < 6; column++)
+        // {
+        //     for (int row = 0; row < 3; row++)
+        //     {
+        //         Vector2 enemyPos = new Vector2(column * 110 + 50, row * 110 + 50);
+        //         Enemy enemy = new Enemy(enemyTex, enemyPos);
+        //         enemies.Add(enemy);
+        //     }
+        // }
     }
 
     protected override void Update(GameTime gameTime)
@@ -103,36 +108,36 @@ public class Game1 : Game
         }
 
         // Looping through each enemy and bullet to see if they collide to then remove them and add points
-        for (int i = enemies.Count - 1; i >= 0; i--)
-        {
-            for (int k = bullets.Count - 1; k >= 0; k--)
-            {
-                if (enemies[i].hitBox.Intersects(bullets[k].hitBox))
-                {
-                    enemies.Remove(enemies[i]);
-                    bullets.Remove(bullets[k]);
-                    score += 100;
-                    break;
-                }
-            }
-        }
+        // for (int i = enemies.Count - 1; i >= 0; i--)
+        // {
+        //     for (int k = bullets.Count - 1; k >= 0; k--)
+        //     {
+        //         if (enemies[i].hitBox.Intersects(bullets[k].hitBox))
+        //         {
+        //             enemies.Remove(enemies[i]);
+        //             bullets.Remove(bullets[k]);
+        //             score += 100;
+        //             break;
+        //         }
+        //     }
+        // }
 
         // Removes a life if the bottom of an enemy reaches the bottom of the screen
-        for (int i = enemies.Count - 1; i >= 0; i--)
-        {
-            if (enemies[i].hitBox.Y + enemies[i].hitBox.Height > windowHeight)
-            {
-                enemies.RemoveAt(i);
-                livesLeft--;
-            }
-        }
+        // for (int i = enemies.Count - 1; i >= 0; i--)
+        // {
+        //     if (enemies[i].hitBox.Y + enemies[i].hitBox.Height > windowHeight)
+        //     {
+        //         enemies.RemoveAt(i);
+        //         livesLeft--;
+        //     }
+        // }
 
         // Removes all bullets and enemies from screen if lives reach zero or goes below
-        if (livesLeft <= 0)
-        {
-            bullets.Clear();
-            enemies.Clear();
-        }
+        // if (livesLeft <= 0)
+        // {
+        //     bullets.Clear();
+        //     enemies.Clear();
+        // }
 
         // Updating window title so score and lives change as they update
         Window.Title = "Space Invaders! | Score: " + score + " | Lives: " + livesLeft;
@@ -153,15 +158,17 @@ public class Game1 : Game
         }
 
         // Draws each enemy
-        foreach (var enemy in enemies)
-        {
-            enemy.Draw(sb);    
-        }
-        
-        // Draws text on screen if you lose
-        if (livesLeft <= 0)
-        {
-            sb.DrawString(endText, "You lost! Final score: " + score, endTextPos, Color.Red);
+        // foreach (var enemy in enemies)
+        // {
+        //     enemy.Draw(sb);    
+        // }
+
+        for (int i = 0; i < enemies.GetLength(0); i++) 
+        { 
+            for (int j = 0; j < enemies.GetLength(1); j++) 
+            { 
+                enemies[i, j].Draw(sb); 
+            } 
         }
         
         sb.End();
