@@ -129,21 +129,20 @@ public class Game1 : Game
         }
 
         // Removes a life if the bottom of an enemy reaches the bottom of the screen
-        // for (int i = enemies.Count - 1; i >= 0; i--)
-        // {
-        //     if (enemies[i].hitBox.Y + enemies[i].hitBox.Height > windowHeight)
-        //     {
-        //         enemies.RemoveAt(i);
-        //         livesLeft--;
-        //     }
-        // }
-
-        // Removes all bullets and enemies from screen if lives reach zero or goes below
-        // if (livesLeft <= 0)
-        // {
-        //     bullets.Clear();
-        //     enemies.Clear();
-        // }
+        for (int row = 0; row < enemies.GetLength(0); row++)
+        {
+            for (int column = 0; column < enemies.GetLength(1); column++)
+            {
+                if (enemies[row,column] != null)
+                {
+                    if (enemies[row,column].hitBox.Y + enemies[row,column].hitBox.Height > windowHeight)
+                    {   
+                        enemies[row,column] = null;
+                        livesLeft--;
+                    }
+                }
+            }
+        }
 
         // Updating window title so score and lives change as they update
         Window.Title = "Space Invaders! | Score: " + score + " | Lives: " + livesLeft;
