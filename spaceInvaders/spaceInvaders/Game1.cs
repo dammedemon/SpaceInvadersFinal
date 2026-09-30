@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 
 namespace spaceInvaders;
@@ -17,8 +18,8 @@ public class Game1 : Game
     List<Bullet> bullets = new List<Bullet>();
     Enemy[,] enemies;
     
-    public const int windowWidth = 750; 
-    public const int windowHeight = 1000;
+    public int windowWidth = 600; 
+    public int windowHeight = 900;
     
     int score = 0;
     int livesLeft = 3;
@@ -47,14 +48,14 @@ public class Game1 : Game
         Texture2D bulletTex = Content.Load<Texture2D>("bullet_SI-1");
        
         // Spawning player
-        Texture2D playerTex = Content.Load<Texture2D>("Ship_01-1");
+        Texture2D playerTex = Content.Load<Texture2D>("space__0006_Player");
         Vector2 playerPos = new Vector2(Window.ClientBounds.Width / 2 - playerTex.Width / 2, Window.ClientBounds.Height - playerTex.Height);
         
         int stopX = Window.ClientBounds.Width - playerTex.Width;
         player = new Player(playerTex, playerPos, stopX, bulletTex, bullets);
         
         // Spawning enemies
-        Texture2D enemyTex = Content.Load<Texture2D>("single_alien");
+        Texture2D enemyTex = Content.Load<Texture2D>("space__0002_B1");
         enemies = new Enemy[5,6];
         for (int row = 0; row < 5; row++) 
         { 
@@ -66,16 +67,6 @@ public class Game1 : Game
                 enemies[row,column] = new Enemy(enemyTex, enemyPos); 
             } 
         }
-        
-        // for (int column = 0; column < 6; column++)
-        // {
-        //     for (int row = 0; row < 3; row++)
-        //     {
-        //         Vector2 enemyPos = new Vector2(column * 110 + 50, row * 110 + 50);
-        //         Enemy enemy = new Enemy(enemyTex, enemyPos);
-        //         enemies.Add(enemy);
-        //     }
-        // }
     }
 
     protected override void Update(GameTime gameTime)
@@ -102,25 +93,40 @@ public class Game1 : Game
         }
 
         // Updating enemy
-        foreach (var enemy in enemies)
+        for (int row = 0; row < enemies.GetLength(0); row++)
         {
-            enemy.Update(gameTime);
+            for (int column = 0; column < enemies.GetLength(1); column++)
+            {
+                if (enemies[row,column] != null)
+                {
+                    enemies[row,column].Update(gameTime);   
+                }
+            }
+            
         }
 
         // Looping through each enemy and bullet to see if they collide to then remove them and add points
-        // for (int i = enemies.Count - 1; i >= 0; i--)
-        // {
-        //     for (int k = bullets.Count - 1; k >= 0; k--)
-        //     {
-        //         if (enemies[i].hitBox.Intersects(bullets[k].hitBox))
-        //         {
-        //             enemies.Remove(enemies[i]);
-        //             bullets.Remove(bullets[k]);
-        //             score += 100;
-        //             break;
-        //         }
-        //     }
-        // }
+        for (int row = 0; row < enemies.GetLength(0); row++)
+        {
+            for (int column = 0; column < enemies.GetLength(1); column++)
+            {
+                if (enemies[row, column] == null)
+                {
+                    continue;
+                }
+                
+                for (int k = bullets.Count - 1; k >= 0; k--)
+                {
+                    if (enemies[row,column].hitBox.Intersects(bullets[k].hitBox))
+                    {
+                        enemies[row, column] = null;
+                        bullets.Remove(bullets[k]);
+                        score += 100;
+                        break;
+                    }
+                }
+            }
+        }
 
         // Removes a life if the bottom of an enemy reaches the bottom of the screen
         // for (int i = enemies.Count - 1; i >= 0; i--)
@@ -163,11 +169,14 @@ public class Game1 : Game
         //     enemy.Draw(sb);    
         // }
 
-        for (int i = 0; i < enemies.GetLength(0); i++) 
+        for (int row = 0; row < enemies.GetLength(0); row++) 
         { 
-            for (int j = 0; j < enemies.GetLength(1); j++) 
+            for (int column = 0; column < enemies.GetLength(1); column++) 
             { 
-                enemies[i, j].Draw(sb); 
+                if (enemies[row, column] != null)
+                {
+                    enemies[row, column].Draw(sb);    
+                }
             } 
         }
         
