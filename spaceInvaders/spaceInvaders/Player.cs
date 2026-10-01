@@ -10,7 +10,7 @@ namespace spaceInvaders
     {
         private Texture2D playerTex;
         private Vector2 playerPos;
-        private int playerSpeed = 5;
+        private float playerSpeed = 2.5f;
         private int stopX;
         
         private KeyboardState previousKeyboardState;
@@ -55,7 +55,7 @@ namespace spaceInvaders
 
         public void Draw(SpriteBatch sb)
         {
-            sb.Draw(playerTex, playerPos, Color.White);
+            sb.Draw(playerTex, playerPos, Color.LimeGreen);
         }
     }
 }

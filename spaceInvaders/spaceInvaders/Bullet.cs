@@ -8,7 +8,7 @@ namespace spaceInvaders
     {
         private Texture2D bulletTex;
         private Vector2 bulletPos;
-        private int bulletSpeed = 7;
+        private float bulletSpeed = 4.5f;
 
         public Rectangle hitBox;
 

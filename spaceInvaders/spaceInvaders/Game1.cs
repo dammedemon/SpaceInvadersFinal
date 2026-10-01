@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 
 
@@ -18,8 +19,12 @@ public class Game1 : Game
     List<Bullet> bullets = new List<Bullet>();
     Enemy[,] enemies;
     
-    public int windowWidth = 600; 
-    public int windowHeight = 900;
+    public int windowWidth = 488; 
+    public int windowHeight = 612;
+
+    int enemyColumns = 8;
+    int enemyRows = 5;
+    int enemyDirection = 1;
     
     int score = 0;
     int livesLeft = 3;
@@ -45,7 +50,7 @@ public class Game1 : Game
         sb = new SpriteBatch(GraphicsDevice);
         
         // Loads the texture of the bullet
-        Texture2D bulletTex = Content.Load<Texture2D>("bullet_SI-1");
+        Texture2D bulletTex = Content.Load<Texture2D>("space_bulletTex");
        
         // Spawning player
         Texture2D playerTex = Content.Load<Texture2D>("space__0006_Player");
@@ -56,15 +61,15 @@ public class Game1 : Game
         
         // Spawning enemies
         Texture2D enemyTex = Content.Load<Texture2D>("space__0002_B1");
-        enemies = new Enemy[5,6];
-        for (int row = 0; row < 5; row++) 
+        enemies = new Enemy[enemyRows, enemyColumns];
+        for (int row = 0; row < enemyRows; row++) 
         { 
-            for (int column = 0; column < 6; column++) 
+            for (int column = 0; column < enemyColumns; column++) 
             { 
-                int x = column * 50;             
-                int y = row * 50; 
-                Vector2 enemyPos = new Vector2(x,y);
-                enemies[row,column] = new Enemy(enemyTex, enemyPos); 
+                int x = column * 35 + 100;             
+                int y = row * 22 + 50; 
+                Vector2 enemyPos = new Vector2(x, y);
+                enemies[row, column] = new Enemy(enemyTex, enemyPos); 
             } 
         }
     }
@@ -92,17 +97,48 @@ public class Game1 : Game
             }
         }
 
-        // Updating enemy
+        // Updating enemy position
         for (int row = 0; row < enemies.GetLength(0); row++)
         {
             for (int column = 0; column < enemies.GetLength(1); column++)
             {
-                if (enemies[row,column] != null)
+                if (enemies[row, column] != null)
                 {
-                    enemies[row,column].Update(gameTime);   
+                    enemies[row, column].Update(gameTime, enemyDirection);
                 }
             }
-            
+        }
+
+        // When the enemy hits a wall it goes down one step and changed direction
+        float rightMostX = 0;
+
+        for (int row = 0; row < enemies.GetLength(0); row++)
+        {
+            for (int column = 0; column < enemies.GetLength(1); column++)
+            {
+                if (enemies[row, column] != null)
+                {
+                    if (enemies[row, column].hitBox.Right > rightMostX)
+                    {
+                        rightMostX = enemies[row, column].hitBox.Right;
+                    }
+                }
+            }
+        }
+
+        if (rightMostX >= windowWidth && enemyDirection == 1)
+        {
+            for (int row = 0; row < enemies.GetLength(0); row++)
+            {
+                for (int column = 0; column < enemies.GetLength(1); column++)
+                {
+                    if (enemies[row, column] != null)
+                    {
+                        enemies[row, column].MoveDown();
+                        enemyDirection = -1;
+                    }
+                }
+            }
         }
 
         // Looping through each enemy and bullet to see if they collide to then remove them and add points
@@ -117,7 +153,7 @@ public class Game1 : Game
                 
                 for (int k = bullets.Count - 1; k >= 0; k--)
                 {
-                    if (enemies[row,column].hitBox.Intersects(bullets[k].hitBox))
+                    if (enemies[row, column].hitBox.Intersects(bullets[k].hitBox))
                     {
                         enemies[row, column] = null;
                         bullets.Remove(bullets[k]);
@@ -133,11 +169,11 @@ public class Game1 : Game
         {
             for (int column = 0; column < enemies.GetLength(1); column++)
             {
-                if (enemies[row,column] != null)
+                if (enemies[row, column] != null)
                 {
-                    if (enemies[row,column].hitBox.Y + enemies[row,column].hitBox.Height > windowHeight)
+                    if (enemies[row, column].hitBox.Y + enemies[row,column].hitBox.Height > windowHeight)
                     {   
-                        enemies[row,column] = null;
+                        enemies[row, column] = null;
                         livesLeft--;
                     }
                 }

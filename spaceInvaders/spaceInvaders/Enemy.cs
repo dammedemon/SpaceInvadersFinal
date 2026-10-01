@@ -27,7 +27,7 @@ namespace spaceInvaders
             hitBox = new Rectangle((int)enemyPos.X, (int)enemyPos.Y, enemyTex.Width, enemyTex.Height);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, int enemyDirection)
         {
             // Keeps hitbox at enemy location
             hitBox.Location = enemyPos.ToPoint();
@@ -36,9 +36,14 @@ namespace spaceInvaders
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (timer >= 1)
             {
-                enemyPos.Y += enemySpeed;
+                enemyPos.X += enemySpeed * enemyDirection;
                 timer = 0;
             }
+        }
+
+        public void MoveDown()
+        {
+            enemyPos.Y += enemySpeed;
         }
 
         public void Draw(SpriteBatch sb)
