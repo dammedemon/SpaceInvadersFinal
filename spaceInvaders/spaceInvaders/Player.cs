@@ -43,7 +43,7 @@ namespace spaceInvaders
             // Shooting, making sure its semi automatic & only one bullet at a time
             KeyboardState currentKeyboardState = Keyboard.GetState();
 
-            if (currentKeyboardState.IsKeyDown(Keys.Space) && previousKeyboardState.IsKeyUp(Keys.Space) && bullets.Count == 0)
+            if (currentKeyboardState.IsKeyDown(Keys.Space) && previousKeyboardState.IsKeyUp(Keys.Space))
             {
                 Vector2 bulletPos = new Vector2(playerPos.X + playerTex.Width / 2 - bulletTex.Width / 2, playerPos.Y);
                 Bullet bullet = new Bullet(bulletTex, bulletPos);
@@ -55,7 +55,7 @@ namespace spaceInvaders
 
         public void Draw(SpriteBatch sb)
         {
-            sb.Draw(playerTex, playerPos, Color.LimeGreen);
+            sb.Draw(playerTex, playerPos, Color.Lime);
         }
     }
 }

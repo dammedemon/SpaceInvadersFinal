@@ -26,14 +26,6 @@
 /processorParam:Version=3.8.5.1
 /build:bullet_SI-1.png
 
-#begin endText.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/processorParam:Version=3.8.5.1
-/build:endText.spritefont
-
 #begin Ship_01-1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -98,4 +90,12 @@
 /processorParam:TextureFormat=Color
 /processorParam:Version=3.8.5.1
 /build:space_bulletTex.png
+
+#begin spriteFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/processorParam:Version=3.8.5.1
+/build:spriteFont.spritefont
 

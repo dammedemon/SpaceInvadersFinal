@@ -16,6 +16,13 @@ public class Game1 : Game
     
     Player player;
     
+    enum GameState 
+    {
+        startScreen,
+        playingScreen,   
+        endingScreen
+    }
+
     List<Bullet> bullets = new List<Bullet>();
     Enemy[,] enemies;
     
@@ -28,6 +35,10 @@ public class Game1 : Game
     
     int score = 0;
     int livesLeft = 3;
+
+    SpriteFont spriteFont;
+    Vector2 scoreTextPos;
+    Vector2 livesTextPos;
 
     public Game1()
     {
@@ -48,6 +59,10 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         sb = new SpriteBatch(GraphicsDevice);
+
+        spriteFont = Content.Load<SpriteFont>("SpriteFont");
+        scoreTextPos = new Vector2(0, 0);
+        livesTextPos = new Vector2(400, 0);
         
         // Loads the texture of the bullet
         Texture2D bulletTex = Content.Load<Texture2D>("space_bulletTex");
@@ -56,7 +71,7 @@ public class Game1 : Game
         Texture2D playerTex = Content.Load<Texture2D>("space__0006_Player");
         Vector2 playerPos = new Vector2(Window.ClientBounds.Width / 2 - playerTex.Width / 2, Window.ClientBounds.Height - playerTex.Height);
         
-        int stopX = Window.ClientBounds.Width - playerTex.Width;
+        int stopX = windowWidth - playerTex.Width;
         player = new Player(playerTex, playerPos, stopX, bulletTex, bullets);
         
         // Spawning enemies
@@ -66,7 +81,7 @@ public class Game1 : Game
         { 
             for (int column = 0; column < enemyColumns; column++) 
             { 
-                int x = column * 35 + 100;             
+                int x = column * 35 + 20;             
                 int y = row * 22 + 50; 
                 Vector2 enemyPos = new Vector2(x, y);
                 enemies[row, column] = new Enemy(enemyTex, enemyPos); 
@@ -109,7 +124,10 @@ public class Game1 : Game
             }
         }
 
-        // When the enemy hits a wall it goes down one step and changed direction
+
+
+        // When the enemy hits a wall it goes down one step and changes direction
+           
         float rightMostX = 0;
 
         for (int row = 0; row < enemies.GetLength(0); row++)
@@ -136,6 +154,38 @@ public class Game1 : Game
                     {
                         enemies[row, column].MoveDown();
                         enemyDirection = -1;
+                    }
+                }
+            }
+        }
+        
+
+        float leftMostX = windowWidth;
+
+        for (int row = 0; row < enemies.GetLength(0); row++)
+        {
+            for (int column = 0; column < enemies.GetLength(1); column++)
+            {
+                if (enemies[row, column] != null)
+                {
+                    if (enemies[row, column].hitBox.Left < leftMostX)
+                    {
+                        leftMostX = enemies[row, column].hitBox.Left;
+                    }
+                }
+            }
+        }
+
+        if (leftMostX <= 0 && enemyDirection == -1)
+        {
+            for (int row = 0; row < enemies.GetLength(0); row++)
+            {
+                for (int column = 0; column < enemies.GetLength(1); column++)
+                {
+                    if (enemies[row, column] != null)
+                    {   
+                        enemies[row, column].MoveDown();
+                        enemyDirection = 1;
                     }
                 }
             }
@@ -214,6 +264,10 @@ public class Game1 : Game
                 }
             } 
         }
+
+
+        sb.DrawString(spriteFont, "Score: " + score, scoreTextPos, Color.Lime); 
+        sb.DrawString(spriteFont, "Lives: " + livesLeft, livesTextPos, Color.Lime);
         
         sb.End();
         base.Draw(gameTime);
