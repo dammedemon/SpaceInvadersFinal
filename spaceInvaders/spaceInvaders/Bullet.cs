@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace spaceInvaders
 {
-    class Bullet
+    public class Bullet
     {
         private Texture2D bulletTex;
         private Vector2 bulletPos;

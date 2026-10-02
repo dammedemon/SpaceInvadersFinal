@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace spaceInvaders
 {
-    class Enemy
+    public class Enemy
     {
         private Texture2D enemyTex;
         private Vector2 enemyPos;
@@ -21,11 +21,10 @@ namespace spaceInvaders
 
         private float timer;
 
-        public Enemy(Texture2D enemyTex, Vector2 enemyPos, int stopX)
+        public Enemy(Texture2D enemyTex, Vector2 enemyPos)
         {
             this.enemyTex = enemyTex;
             this.enemyPos = enemyPos;
-            this.stopX = stopX;
 
             hitBox = new Rectangle((int)enemyPos.X, (int)enemyPos.Y, enemyTex.Width, enemyTex.Height);
         }

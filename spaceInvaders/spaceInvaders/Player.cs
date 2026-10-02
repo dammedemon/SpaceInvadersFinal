@@ -40,7 +40,7 @@ namespace spaceInvaders
                 playerPos.X += playerSpeed;
             }
 
-            // Shooting, making sure its semi automatic & only one bullet at a time
+            // Shooting, making sure its semi automatic
             KeyboardState currentKeyboardState = Keyboard.GetState();
 
             if (currentKeyboardState.IsKeyDown(Keys.Space) && previousKeyboardState.IsKeyUp(Keys.Space))

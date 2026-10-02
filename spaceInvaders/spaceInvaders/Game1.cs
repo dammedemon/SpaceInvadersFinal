@@ -14,8 +14,6 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch sb;
     
-    Player player;
-    
     enum GameState 
     {
         MainMenu,
@@ -23,18 +21,15 @@ public class Game1 : Game
         GameOver
     }
 
-    List<Bullet> bullets = new List<Bullet>();
-    Enemy[,] enemies;
-    
+    Player player;
+    EnemyManager enemyManager;
+    public List<Bullet> bullets = new List<Bullet>();
+
     public int windowWidth = 488; 
     public int windowHeight = 612;
-
-    int enemyColumns = 8;
-    int enemyRows = 5;
-    int enemyDirection = 1;
     
-    int score = 0;
-    int livesLeft = 3;
+    public int score = 0;
+    public int livesLeft = 3;
 
     SpriteFont spriteFont;
     Vector2 scoreTextPos;
@@ -61,6 +56,8 @@ public class Game1 : Game
         sb = new SpriteBatch(GraphicsDevice);
 
         spriteFont = Content.Load<SpriteFont>("SpriteFont");
+
+        
         scoreTextPos = new Vector2(0, 0);
         livesTextPos = new Vector2(400, 0);
         
@@ -76,17 +73,7 @@ public class Game1 : Game
         
         // Spawning enemies
         Texture2D enemyTex = Content.Load<Texture2D>("space__0002_B1");
-        enemies = new Enemy[enemyRows, enemyColumns];
-        for (int row = 0; row < enemyRows; row++) 
-        { 
-            for (int column = 0; column < enemyColumns; column++) 
-            { 
-                int x = column * 35 + 20;             
-                int y = row * 22 + 50; 
-                Vector2 enemyPos = new Vector2(x, y);
-                enemies[row, column] = new Enemy(enemyTex, enemyPos, stopX); 
-            } 
-        }
+        enemyManager = new EnemyManager(enemyTex);
     }
 
     protected override void Update(GameTime gameTime)
@@ -113,118 +100,7 @@ public class Game1 : Game
         }
 
         // Updating enemy position
-        for (int row = 0; row < enemies.GetLength(0); row++)
-        {
-            for (int column = 0; column < enemies.GetLength(1); column++)
-            {
-                if (enemies[row, column] != null)
-                {
-                    enemies[row, column].Update(gameTime, enemyDirection);
-                }
-            }
-        }
-
-        // When the enemy hits a wall it goes down one step and changes direction
-           
-        float rightMostX = 0; // Variable for the right most x coordinate of the entire enemy block
-
-        for (int row = 0; row < enemies.GetLength(0); row++)
-        {
-            for (int column = 0; column < enemies.GetLength(1); column++)
-            {
-                if (enemies[row, column] != null)
-                {
-                    if (enemies[row, column].hitBox.Right > rightMostX) // If statement to update the variable to always be the highest X coordinate 
-                    {
-                        rightMostX = enemies[row, column].hitBox.Right; 
-                    }
-                }
-            }
-        }
-
-        if (rightMostX >= windowWidth && enemyDirection == 1) // If the right side of the enemy block reaches an edge and they're moving right, it goes down a space.
-        {
-            for (int row = 0; row < enemies.GetLength(0); row++)
-            {
-                for (int column = 0; column < enemies.GetLength(1); column++)
-                {
-                    if (enemies[row, column] != null)
-                    {
-                        enemies[row, column].MoveDown(); // calls for movedown function in enemy class 
-                        enemyDirection = -1; // Changes enemyDirection so enemy blocks move left 
-                    }
-                }
-            }
-        }
-        
-        // Same as above but for the left side
-        float leftMostX = windowWidth; 
-
-        for (int row = 0; row < enemies.GetLength(0); row++)
-        {
-            for (int column = 0; column < enemies.GetLength(1); column++)
-            {
-                if (enemies[row, column] != null)
-                {
-                    if (enemies[row, column].hitBox.Left < leftMostX)
-                    {
-                        leftMostX = enemies[row, column].hitBox.Left;
-                    }
-                }
-            }
-        }
-
-        if (leftMostX <= 0 && enemyDirection == -1)
-        {
-            for (int row = 0; row < enemies.GetLength(0); row++)
-            {
-                for (int column = 0; column < enemies.GetLength(1); column++)
-                {
-                    if (enemies[row, column] != null)
-                    {   
-                        enemies[row, column].MoveDown();
-                        enemyDirection = 1;
-                    }
-                }
-            }
-        }
-
-        // Looping through each enemy and bullet to see if they collide to then remove them and add points
-        for (int row = 0; row < enemies.GetLength(0); row++)
-        {
-            for (int column = 0; column < enemies.GetLength(1); column++)
-            {
-                if (enemies[row, column] != null) // If the enemy exists -> check for collision between bullet and enemy
-                {
-                    for (int k = bullets.Count - 1; k >= 0; k--)
-                    {
-                        if (enemies[row, column].hitBox.Intersects(bullets[k].hitBox))
-                        {
-                            enemies[row, column] = null;
-                            bullets.Remove(bullets[k]);
-                            score += 100;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        // Removes a life if the bottom of an enemy reaches the bottom of the screen
-        for (int row = 0; row < enemies.GetLength(0); row++)
-        {
-            for (int column = 0; column < enemies.GetLength(1); column++)
-            {
-                if (enemies[row, column] != null)
-                {
-                    if (enemies[row, column].hitBox.Y + enemies[row,column].hitBox.Height > windowHeight)
-                    {   
-                        enemies[row, column] = null;
-                        livesLeft--;
-                    }
-                }
-            }
-        }
+        enemyManager.Update(gameTime, windowWidth, windowHeight, bullets);
 
         // Updating window title so score and lives change as they update
         Window.Title = "Space Invaders! | Score: " + score + " | Lives: " + livesLeft;
@@ -244,16 +120,7 @@ public class Game1 : Game
             bullet.Draw(sb);
         }
 
-        for (int row = 0; row < enemies.GetLength(0); row++) 
-        { 
-            for (int column = 0; column < enemies.GetLength(1); column++) 
-            { 
-                if (enemies[row, column] != null)
-                {
-                    enemies[row, column].Draw(sb);    
-                }
-            } 
-        }
+        enemyManager.Draw(sb);
 
         sb.DrawString(spriteFont, "Score: " + score, scoreTextPos, Color.Lime); 
         sb.DrawString(spriteFont, "Lives: " + livesLeft, livesTextPos, Color.Lime);
