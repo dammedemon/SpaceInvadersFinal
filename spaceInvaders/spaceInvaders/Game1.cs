@@ -20,7 +20,7 @@ public class Game1 : Game
     {
         startScreen,
         playingScreen,   
-        endingScreen
+        gameOver
     }
 
     List<Bullet> bullets = new List<Bullet>();
@@ -128,7 +128,7 @@ public class Game1 : Game
 
         // When the enemy hits a wall it goes down one step and changes direction
            
-        float rightMostX = 0;
+        float rightMostX = 0; // Variable for the right most x coordinate of the entire enemy block
 
         for (int row = 0; row < enemies.GetLength(0); row++)
         {
@@ -136,15 +136,15 @@ public class Game1 : Game
             {
                 if (enemies[row, column] != null)
                 {
-                    if (enemies[row, column].hitBox.Right > rightMostX)
+                    if (enemies[row, column].hitBox.Right > rightMostX) // If statement to update the variable to always be the highest X coordinate 
                     {
-                        rightMostX = enemies[row, column].hitBox.Right;
+                        rightMostX = enemies[row, column].hitBox.Right; 
                     }
                 }
             }
         }
 
-        if (rightMostX >= windowWidth && enemyDirection == 1)
+        if (rightMostX >= windowWidth && enemyDirection == 1) // If the right side of the enemy block reaches an edge and they're moving right, it goes down a space.
         {
             for (int row = 0; row < enemies.GetLength(0); row++)
             {
@@ -152,15 +152,15 @@ public class Game1 : Game
                 {
                     if (enemies[row, column] != null)
                     {
-                        enemies[row, column].MoveDown();
-                        enemyDirection = -1;
+                        enemies[row, column].MoveDown(); // calls for movedown function in enemy class 
+                        enemyDirection = -1; // Changes enemyDirection so enemy blocks move left 
                     }
                 }
             }
         }
         
-
-        float leftMostX = windowWidth;
+        // Same as above but for the left side
+        float leftMostX = windowWidth; 
 
         for (int row = 0; row < enemies.GetLength(0); row++)
         {
@@ -196,19 +196,17 @@ public class Game1 : Game
         {
             for (int column = 0; column < enemies.GetLength(1); column++)
             {
-                if (enemies[row, column] == null)
+                if (enemies[row, column] != null)
                 {
-                    continue;
-                }
-                
-                for (int k = bullets.Count - 1; k >= 0; k--)
-                {
-                    if (enemies[row, column].hitBox.Intersects(bullets[k].hitBox))
+                    for (int k = bullets.Count - 1; k >= 0; k--)
                     {
-                        enemies[row, column] = null;
-                        bullets.Remove(bullets[k]);
-                        score += 100;
-                        break;
+                        if (enemies[row, column].hitBox.Intersects(bullets[k].hitBox))
+                        {
+                            enemies[row, column] = null;
+                            bullets.Remove(bullets[k]);
+                            score += 100;
+                            break;
+                        }
                     }
                 }
             }
@@ -248,12 +246,6 @@ public class Game1 : Game
             bullet.Draw(sb);
         }
 
-        // Draws each enemy
-        // foreach (var enemy in enemies)
-        // {
-        //     enemy.Draw(sb);    
-        // }
-
         for (int row = 0; row < enemies.GetLength(0); row++) 
         { 
             for (int column = 0; column < enemies.GetLength(1); column++) 
@@ -264,7 +256,6 @@ public class Game1 : Game
                 }
             } 
         }
-
 
         sb.DrawString(spriteFont, "Score: " + score, scoreTextPos, Color.Lime); 
         sb.DrawString(spriteFont, "Lives: " + livesLeft, livesTextPos, Color.Lime);
