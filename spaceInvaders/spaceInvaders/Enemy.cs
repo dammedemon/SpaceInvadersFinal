@@ -12,6 +12,8 @@ namespace spaceInvaders
         private Texture2D enemyTex;
         private Vector2 enemyPos;
         private int enemySpeed = 30;
+        private int moveDownSpeed = 30;
+        private int stopX;
 
         public Vector2 Position => enemyPos;
 
@@ -19,10 +21,11 @@ namespace spaceInvaders
 
         private float timer;
 
-        public Enemy(Texture2D enemyTex, Vector2 enemyPos)
+        public Enemy(Texture2D enemyTex, Vector2 enemyPos, int stopX)
         {
             this.enemyTex = enemyTex;
             this.enemyPos = enemyPos;
+            this.stopX = stopX;
 
             hitBox = new Rectangle((int)enemyPos.X, (int)enemyPos.Y, enemyTex.Width, enemyTex.Height);
         }
@@ -34,7 +37,7 @@ namespace spaceInvaders
             
             // Moves the enemy when timer equals one or higher then resets timer
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (timer >= 1)
+            if (timer >= 0.5)
             {
                 enemyPos.X += enemySpeed * enemyDirection;
                 timer = 0;
@@ -43,7 +46,7 @@ namespace spaceInvaders
 
         public void MoveDown()
         {
-            enemyPos.Y += enemySpeed;
+            enemyPos.Y += moveDownSpeed;
         }
 
         public void Draw(SpriteBatch sb)

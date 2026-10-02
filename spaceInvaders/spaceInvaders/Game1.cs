@@ -18,9 +18,9 @@ public class Game1 : Game
     
     enum GameState 
     {
-        startScreen,
-        playingScreen,   
-        gameOver
+        MainMenu,
+        InGame,   
+        GameOver
     }
 
     List<Bullet> bullets = new List<Bullet>();
@@ -84,7 +84,7 @@ public class Game1 : Game
                 int x = column * 35 + 20;             
                 int y = row * 22 + 50; 
                 Vector2 enemyPos = new Vector2(x, y);
-                enemies[row, column] = new Enemy(enemyTex, enemyPos); 
+                enemies[row, column] = new Enemy(enemyTex, enemyPos, stopX); 
             } 
         }
     }
@@ -123,8 +123,6 @@ public class Game1 : Game
                 }
             }
         }
-
-
 
         // When the enemy hits a wall it goes down one step and changes direction
            
@@ -196,7 +194,7 @@ public class Game1 : Game
         {
             for (int column = 0; column < enemies.GetLength(1); column++)
             {
-                if (enemies[row, column] != null)
+                if (enemies[row, column] != null) // If the enemy exists -> check for collision between bullet and enemy
                 {
                     for (int k = bullets.Count - 1; k >= 0; k--)
                     {
