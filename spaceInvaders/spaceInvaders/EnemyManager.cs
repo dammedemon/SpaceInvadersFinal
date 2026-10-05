@@ -8,17 +8,29 @@ using System.Data;
 
 namespace spaceInvaders
 {
-    public class EnemyManager : Game1
+    public class EnemyManager
     {
-        public int enemyColumns = 8;
-        public int enemyRows = 5;
+        private int enemyColumns = 8;
+        private int enemyRows = 5;
         
-        private int enemyDirection = 1;
-        private Enemy[,] enemies;
+        public int livesLeft = 3;
+        public int score = 0;
 
-        public EnemyManager(Texture2D enemyTex)
+        private int enemyDirection = 1;
+        public Enemy[,] enemies;
+
+        SpriteFont spriteFont;
+        Vector2 scoreTextPos;
+        Vector2 livesTextPos;
+
+        public EnemyManager(Texture2D enemyTex, SpriteFont spriteFont, Vector2 scoreTextPos, Vector2 livesTextPos)
         {
+            this.spriteFont = spriteFont;
+            this.scoreTextPos = scoreTextPos;
+            this.livesTextPos = livesTextPos;
+            
             enemies = new Enemy[enemyRows, enemyColumns];
+            
             for (int row = 0; row < enemyRows; row++) 
             { 
                 for (int column = 0; column < enemyColumns; column++) 
@@ -31,9 +43,10 @@ namespace spaceInvaders
             }
         }
 
-
         public void Update(GameTime gameTime, int windowWidth, int windowHeight, List<Bullet> bullets)
         {
+            
+            // Updates the the enemies that aren't null
             for (int row = 0; row < enemies.GetLength(0); row++)
             {
                 for (int column = 0; column < enemies.GetLength(1); column++)
@@ -44,8 +57,8 @@ namespace spaceInvaders
                     }
                 }
             }
-            // When the enemy hits a wall it goes down one step and changes direction
             
+            // When the enemy hits a wall it goes down one step and changes direction
             float rightMostX = 0; // Variable for the right most x coordinate of the entire enemy block
 
             for (int row = 0; row < enemies.GetLength(0); row++)
@@ -71,7 +84,7 @@ namespace spaceInvaders
                         if (enemies[row, column] != null)
                         {
                             enemies[row, column].MoveDown(); // calls for movedown function in enemy class 
-                            enemyDirection = -1; // Changes enemyDirection so enemy blocks move left 
+                            enemyDirection = -1; // Changes enemyDirection so enemy block starts moving left 
                         }
                     }
                 }
@@ -109,7 +122,7 @@ namespace spaceInvaders
                 }
             }
 
-            // Looping through each enemy and bullet to see if they collide to then remove them and add points
+            // Looping through each enemy and bullet to see if they collide to then remove them both and add points
             for (int row = 0; row < enemies.GetLength(0); row++)
             {
                 for (int column = 0; column < enemies.GetLength(1); column++)
@@ -147,6 +160,23 @@ namespace spaceInvaders
             }
         }
 
+        // Method to see if all enemies have been defeated to then change the game state to game over
+        public bool AllEnemiesDefeated()
+        {
+            for (int row = 0; row < enemies.GetLength(0); row++)
+            {
+                for (int column = 0; column < enemies.GetLength(1); column++)
+                {
+                    if (enemies[row, column] != null)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        
+        // Draws out all the enemies that aren't null & score and lives left
         public void Draw(SpriteBatch sb)
         {
             for (int row = 0; row < enemies.GetLength(0); row++) 
@@ -159,6 +189,9 @@ namespace spaceInvaders
                     }
                 } 
             }
+
+            sb.DrawString(spriteFont, "Score: " + score, scoreTextPos, Color.Lime); 
+            sb.DrawString(spriteFont, "Lives: " + livesLeft, livesTextPos, Color.Lime);
         }
     }
 }
