@@ -20,9 +20,14 @@ public class Game1 : Game
     }
 
     GameState currentGameState = GameState.MainMenu;
+    
+    // Declaring my different classes
     Player player;
     EnemyManager enemyManager;
     public List<Bullet> bullets = new List<Bullet>();
+
+    Random rnd;
+    Vector2[] posArray;
 
     // Declaring the window size
     public int windowWidth = 488; 
@@ -37,11 +42,14 @@ public class Game1 : Game
     Texture2D mainMenuBackground;
     Texture2D gameOverBackground;
     Texture2D inGameBackground;
+    
     Texture2D startButton;
     Rectangle startButtonRect;
 
     Texture2D tankSpriteSheet;
     Rectangle srcRec;
+
+    Texture2D ball;
 
     // Declaring the spritefont and text positions for score and lives left
     SpriteFont spriteFont;
@@ -72,13 +80,14 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         sb = new SpriteBatch(GraphicsDevice);
+        rnd = new Random();
 
         // Loading the spritefont and positions for the lives and score
         spriteFont = Content.Load<SpriteFont>("SpriteFont");
         scoreTextPos = new Vector2(0, 0);
         livesTextPos = new Vector2(400, 0);
         
-        // Loading al the textures that'll be used for the different game states
+        // Loading all the textures that'll be used for the different game states
         mainMenuBackground = Content.Load<Texture2D>("space_light");
         startButton = Content.Load<Texture2D>("Startknapp");
         gameOverBackground = Content.Load<Texture2D>("Purple_space");
@@ -87,6 +96,8 @@ public class Game1 : Game
 
         tankSpriteSheet = Content.Load<Texture2D>("spriteSheet_Tanks");
         srcRec = new Rectangle(0, 288, 32, 32);
+
+        ball = Content.Load<Texture2D>("ball");
 
         // Loads the texture of the bullet
         Texture2D bulletTex = Content.Load<Texture2D>("space_bulletTex");
@@ -102,6 +113,20 @@ public class Game1 : Game
         // Spawning enemies
         Texture2D enemyTex = Content.Load<Texture2D>("space__0002_B1");
         enemyManager = new EnemyManager(enemyTex, spriteFont, scoreTextPos, livesTextPos);
+
+        // Spawning 5 random sprites in the game over screen
+        int randStopX = windowWidth - ball.Width;
+        int randStopY = windowHeight - ball.Height;
+
+        posArray = new Vector2[5];
+
+        for (int i = 0; i < 5; i++)
+        {
+            int randX = rnd.Next(0, randStopX);
+            int randY = rnd.Next(0, randStopY);
+            Vector2 pos = new Vector2(randX, randY);
+            posArray[i] = pos;
+        }
     }
 
     protected override void Update(GameTime gameTime)
@@ -226,9 +251,15 @@ public class Game1 : Game
         if (currentGameState == GameState.GameOver)
         {   
             sb.Draw(gameOverBackground, Vector2.Zero, Color.White);
-            sb.DrawString(spriteFont, "Game Over", new Vector2(windowWidth / 2 - 50, windowHeight / 2), Color.Black);
-            sb.DrawString(spriteFont, "Final Score: " + enemyManager.score, new Vector2(windowWidth / 2 - 50, windowHeight / 2 + 50), Color.Black);
-            sb.DrawString(spriteFont, "Press ESC to exit", new Vector2(windowWidth / 2 - 50, windowHeight / 2 + 100), Color.Black);
+            
+            foreach (var pos in posArray)
+            {
+                sb.Draw(ball, pos, Color.White);
+            }
+
+            sb.DrawString(spriteFont, "Game Over", new Vector2(windowWidth / 2 - 50, windowHeight / 3), Color.Black);
+            sb.DrawString(spriteFont, "Final Score: " + enemyManager.score, new Vector2(windowWidth / 2 - 50, windowHeight / 3 + 50), Color.Black);
+            sb.DrawString(spriteFont, "Press ESC to exit", new Vector2(windowWidth / 2 - 50, windowHeight / 3 + 100), Color.Black);
         }
             
         sb.End();
