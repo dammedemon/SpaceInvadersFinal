@@ -30,8 +30,8 @@ public class Game1 : Game
     Vector2[] posArray;
 
     // Declaring the window size
-    public int windowWidth = 488; 
-    public int windowHeight = 612;
+    public int windowWidth = 500; 
+    public int windowHeight = 800;
 
     // Declaring variables for the tank animation in the main menu
     int frame;
@@ -103,12 +103,14 @@ public class Game1 : Game
         Texture2D bulletTex = Content.Load<Texture2D>("space_bulletTex");
        
         // Spawning player
-        Texture2D playerTex = Content.Load<Texture2D>("space__0006_Player");
-        Vector2 playerPos = new Vector2(Window.ClientBounds.Width / 2 - playerTex.Width / 2, Window.ClientBounds.Height - playerTex.Height);
+        Texture2D playerTex = Content.Load<Texture2D>("space-invaders");
         
-        // Sets stopX value so player can't go past the bounds of the window
-        int stopX = windowWidth - playerTex.Width;
-        player = new Player(playerTex, playerPos, stopX, bulletTex, bullets);
+        // Sets playerStopX value so player can't go past the bounds of the window
+        Point playerSize = new Point(60, 70);
+        Vector2 playerPos = new Vector2(Window.ClientBounds.Width / 2 - playerSize.X / 2, Window.ClientBounds.Height - playerSize.Y - 20);
+        int playerStopX = windowWidth - playerSize.X;
+        Rectangle playerRec = new Rectangle((int)playerPos.X, (int)playerPos.Y, playerSize.X, playerSize.Y);
+        player = new Player(playerTex, playerPos, playerStopX, bulletTex, bullets, playerSize, playerRec);
         
         // Spawning enemies
         Texture2D enemyTex = Content.Load<Texture2D>("space__0002_B1");

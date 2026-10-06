@@ -9,10 +9,11 @@ namespace spaceInvaders
 {
     public class Enemy
     {
-        private Texture2D enemyTex;
+        public Texture2D enemyTex;
         private Vector2 enemyPos;
         private int enemySpeed = 5;
         private int moveDownSpeed = 30;
+        
 
         public Vector2 Position => enemyPos;
 
