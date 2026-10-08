@@ -30,8 +30,8 @@ public class Game1 : Game
     Vector2[] posArray;
 
     // Declaring the window size
-    public int windowWidth = 500; 
-    public int windowHeight = 800;
+    public int windowWidth = 488; 
+    public int windowHeight = 612;
 
     // Declaring variables for the tank animation in the main menu
     int frame;
